@@ -1,6 +1,4 @@
 from dataclasses import dataclass, field
-import string
-import logging
 
 
 @dataclass
@@ -16,20 +14,7 @@ class Question:
     options: list[Option] = field(default_factory=list)
 
     def __post_init__(self) -> None:
-        self.options = [Option(**opt) for opt in self.options]
-
-    def __str__(self) -> str:
-        """Nicely print text of the question with possible answeres"""
-
-        logging.info(f"Question text: {self.text}")
-
-        output = f"\n{self.text}\n"
-
-        for letter, opt in zip(string.ascii_letters, self.options):
-            logging.info(opt)
-            output += f"\t{letter}) {opt.answer}\n"
-
-        return output
+        self.options = [Option(**opt) for opt in self.options] # pyright: ignore[reportCallIssue]
 
     def ask(self) -> dict:
         return {
@@ -46,7 +31,7 @@ class Quiz:
     current_question: int = -1
 
     def __post_init__(self):
-        self.questions = [Question(**q) for q in self.questions]
+        self.questions = [Question(**q) for q in self.questions] # pyright: ignore[reportCallIssue]
 
     def __next__(self) -> Question:
         self.current_question += 1
