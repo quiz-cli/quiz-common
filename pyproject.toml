@@ -1,7 +1,7 @@
 [project]
 name = "quiz-common"
 version = "0.1.0"
-description = "Shared data models for quiz counterparts"
+description = "Shared data models used by quiz components"
 readme = "README.md"
 authors = [
     { name = "Martin Zelený", email = "martin.zeleny@volny.cz" }
@@ -12,3 +12,16 @@ dependencies = []
 [build-system]
 requires = ["uv_build>=0.9.18,<0.10.0"]
 build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "ruff>=0.14.10",
+]
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "D203",
+    "D212",
+    "COM812",
+]
