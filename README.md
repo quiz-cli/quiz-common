@@ -2,9 +2,9 @@
 
 Shared dataclass-based quiz models (`Quiz`, `Question`, `Option`) used by quiz components.
 
-## Development
+## Contribution
 
-Format and lint:
+The code needs to comply with:
 
 ```bash
 $ uv run ruff format
