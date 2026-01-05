@@ -1,6 +1,6 @@
 """Shared data models used by quiz components."""
 
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
 
 
 @dataclass
@@ -21,7 +21,7 @@ class Question:
 
     def __post_init__(self) -> None:
         """Load list of options into the Question instance."""
-        self.options = [Option(**opt) for opt in self.options]  # pyright: ignore[reportCallIssue]
+        self.options = [Option(**asdict(opt)) for opt in self.options]
 
     def ask(self) -> dict:
         """Return a representation of the question which is sent to the players."""
@@ -42,7 +42,7 @@ class Quiz:
 
     def __post_init__(self) -> None:
         """Load list of questions into the Quiz instance."""
-        self.questions = [Question(**q) for q in self.questions]  # pyright: ignore[reportCallIssue]
+        self.questions = [Question(**asdict(q)) for q in self.questions]
 
     def __next__(self) -> Question:
         """Return the next question or raise StopIteration."""
