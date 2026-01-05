@@ -1,27 +1,21 @@
 """Shared data models used by quiz components."""
 
-from dataclasses import asdict, dataclass, field
+from pydantic import BaseModel, Field
 
 
-@dataclass
-class Option:
+class Option(BaseModel):
     """Single answer option for a question."""
 
     answer: str
     correct: bool
 
 
-@dataclass
-class Question:
+class Question(BaseModel):
     """Quiz question with text, options and optional time limit."""
 
     text: str
     time_limit: int | None = None
-    options: list[Option] = field(default_factory=list)
-
-    def __post_init__(self) -> None:
-        """Load list of options into the Question instance."""
-        self.options = [Option(**asdict(opt)) for opt in self.options]
+    options: list[Option] = Field(default_factory=list)
 
     def ask(self) -> dict:
         """Return a representation of the question which is sent to the players."""
@@ -32,17 +26,12 @@ class Question:
         }
 
 
-@dataclass
-class Quiz:
+class Quiz(BaseModel):
     """Collection of questions with iteration state."""
 
     name: str
-    questions: list[Question] = field(default_factory=list)
+    questions: list[Question] = Field(default_factory=list)
     current_question: int = -1
-
-    def __post_init__(self) -> None:
-        """Load list of questions into the Quiz instance."""
-        self.questions = [Question(**asdict(q)) for q in self.questions]
 
     def __next__(self) -> Question:
         """Return the next question or raise StopIteration."""

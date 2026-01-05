@@ -1,6 +1,6 @@
 # quiz-common
 
-Shared dataclass-based quiz models (`Quiz`, `Question`, `Option`) used by quiz components.
+Shared Pydantic-based quiz models (`Quiz`, `Question`, `Option`) used by quiz components.
 
 ## Contribution
 
