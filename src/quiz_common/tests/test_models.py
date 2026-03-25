@@ -2,9 +2,7 @@
 
 from typing import Any
 
-import pytest
-
-from quiz_common.models import Option, Question, Quiz
+from quiz_common.models import Quiz
 
 
 def test_option_answer_type_conversion() -> None:
@@ -47,5 +45,6 @@ def test_option_answer_type_conversion() -> None:
     assert quiz_from_non_string == quiz_from_string
 
     # Extra check: verify answer type is string
-    assert isinstance(quiz_from_non_string.questions[0].options[0].answer, str)
-    assert quiz_from_non_string.questions[0].options[0].answer == "22"
+    answer = quiz_from_non_string.questions[0].options[0].answer
+    assert isinstance(answer, str)
+    assert answer == "22"
