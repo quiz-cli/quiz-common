@@ -1,1 +1,1 @@
-
+"""Test package for quiz_common."""
