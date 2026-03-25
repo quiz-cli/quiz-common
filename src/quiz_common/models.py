@@ -1,6 +1,5 @@
 """Shared data models used by quiz components."""
 
-from typing import Any
 
 from pydantic import BaseModel, Field, field_validator
 
