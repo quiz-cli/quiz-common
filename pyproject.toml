@@ -19,7 +19,6 @@ build-backend = "uv_build"
 dev = [
     "ruff>=0.14.10",
     "ty>=0.0.9",
-    "pytest>=7.0",
 ]
 
 [tool.ruff.lint]
@@ -28,4 +27,8 @@ ignore = [
     "D203",
     "D212",
     "COM812",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"src/quiz_common/tests/*" = ["S101"
 ]
