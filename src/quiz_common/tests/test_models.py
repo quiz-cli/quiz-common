@@ -1,14 +1,16 @@
 """Tests for quiz_common.models module."""
 
+from typing import Any
+
 import pytest
 
 from quiz_common.models import Option, Question, Quiz
 
 
-def test_option_answer_type_conversion():
+def test_option_answer_type_conversion() -> None:
     """Test that non-string answer types are converted to strings."""
     # Non-string data (numbers and boolean without quotes)
-    non_string_data = {
+    non_string_data: dict[str, Any] = {
         "name": "Test Quiz",
         "questions": [
             {
@@ -17,13 +19,13 @@ def test_option_answer_type_conversion():
                     {"answer": 22, "correct": True},
                     {"answer": 3.14, "correct": False},
                     {"answer": True, "correct": False},
-                ]
-            }
-        ]
+                ],
+            },
+        ],
     }
 
     # String data (everything with quotes)
-    string_data = {
+    string_data: dict[str, Any] = {
         "name": "Test Quiz",
         "questions": [
             {
@@ -32,9 +34,9 @@ def test_option_answer_type_conversion():
                     {"answer": "22", "correct": True},
                     {"answer": "3.14", "correct": False},
                     {"answer": "True", "correct": False},
-                ]
-            }
-        ]
+                ],
+            },
+        ],
     }
 
     # Create Quiz from both versions
