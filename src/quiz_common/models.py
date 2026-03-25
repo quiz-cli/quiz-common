@@ -11,7 +11,7 @@ class Option(BaseModel):
 
     @field_validator("answer", mode="before")
     @classmethod
-    def convert_to_string(cls, v: str | bool | float) -> str: # noqa: FBT001
+    def convert_to_string(cls, v: str | bool | float) -> str:  # noqa: FBT001
         """Allow int, float, bool and convert them to string."""
         if isinstance(v, (int, float, bool)):
             return str(v)
