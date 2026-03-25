@@ -12,7 +12,7 @@ class Option(BaseModel):
 
     @field_validator("answer", mode="before")
     @classmethod
-    def convert_to_string(cls, v: str | int | float) -> str:
+    def convert_to_string(cls, v: str | bool | float) -> str:
         """Allow int, float, bool and convert them to string."""
         if isinstance(v, (int, float, bool)):
             return str(v)
