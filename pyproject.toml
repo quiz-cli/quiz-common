@@ -31,4 +31,4 @@ ignore = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"src/quiz_common/tests/*" = ["S101"]
+"tests/*" = ["S101"]
