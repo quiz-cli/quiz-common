@@ -44,10 +44,10 @@ class Question(BaseModel):
 
     def print_question(self) -> None:
         """Nicely print text of the question with possible answeres."""
-        print(f"Question: {self.text}") # noqa: T201
+        print(f"Question: {self.text}")  # noqa: T201
         answers = [opt.answer for opt in self.options]
         for letter, opt in zip(string.ascii_letters, answers, strict=False):
-            print(f"\t{letter}) {opt}") # noqa: T201
+            print(f"\t{letter}) {opt}")  # noqa: T201
 
 
 class Quiz(BaseModel):
