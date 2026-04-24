@@ -1,6 +1,7 @@
 """Shared data models used by quiz components."""
 
 import string
+
 from pydantic import BaseModel, Field, field_validator
 
 
@@ -17,12 +18,14 @@ class Option(BaseModel):
         if isinstance(v, (int, float, bool)):
             return str(v)
         return v
-    
+
     def ask(self) -> dict:
-        return{
+        """Return a dictionary representation of the option, used when sending json."""
+        return {
             "answer": self.answer,
             "correct": self.correct,
         }
+
 
 class Question(BaseModel):
     """Quiz question with text, options and optional time limit."""
@@ -38,14 +41,13 @@ class Question(BaseModel):
             "text": self.text,
             "options": [opt.ask() for opt in self.options],
         }
-    
 
     def print_question(self) -> None:
         """Nicely print text of the question with possible answeres."""
-        print(f"Question: {self.text}")
+        print(f"Question: {self.text}") # noqa: T201
         answers = [opt.answer for opt in self.options]
-        for letter, opt in zip(string.ascii_letters, answers):
-            print(f"\t{letter}) {opt}")
+        for letter, opt in zip(string.ascii_letters, answers, strict=False):
+            print(f"\t{letter}) {opt}") # noqa: T201
 
 
 class Quiz(BaseModel):
