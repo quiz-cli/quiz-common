@@ -16,7 +16,12 @@ class Option(BaseModel):
         if isinstance(v, (int, float, bool)):
             return str(v)
         return v
-
+    
+    def ask(self) -> dict:
+        return{
+            "answer": self.answer,
+            "correct": self.correct,
+        }
 
 class Question(BaseModel):
     """Quiz question with text, options and optional time limit."""
@@ -30,9 +35,15 @@ class Question(BaseModel):
         return {
             "type": "question",
             "text": self.text,
-            "options": [opt.answer for opt in self.options],
+            "options": [opt.ask() for opt in self.options],
         }
-
+    
+    def print_question(self) -> None:
+        """Nicely print text of the question with possible answeres."""
+        print(f"Question: {self.text}")
+        answers = [opt.answer for opt in self.options]
+        for letter, opt in zip(string.ascii_letters, answers, strict=False):
+            print(f"\t{letter}) {opt}")
 
 class Quiz(BaseModel):
     """Collection of questions with iteration state."""
