@@ -1,5 +1,6 @@
 """Shared data models used by quiz components."""
 
+import string
 from pydantic import BaseModel, Field, field_validator
 
 
@@ -38,12 +39,14 @@ class Question(BaseModel):
             "options": [opt.ask() for opt in self.options],
         }
     
+
     def print_question(self) -> None:
         """Nicely print text of the question with possible answeres."""
         print(f"Question: {self.text}")
         answers = [opt.answer for opt in self.options]
-        for letter, opt in zip(string.ascii_letters, answers, strict=False):
+        for letter, opt in zip(string.ascii_letters, answers):
             print(f"\t{letter}) {opt}")
+
 
 class Quiz(BaseModel):
     """Collection of questions with iteration state."""
