@@ -5,11 +5,10 @@ import string
 from pydantic import BaseModel, Field, field_validator
 
 
-class Option(BaseModel):
-    """Single answer option for a question."""
+class OptionAnswer(BaseModel):
+    """Single answer option for a question without correctness information."""
 
     answer: str
-    correct: bool
 
     @field_validator("answer", mode="before")
     @classmethod
@@ -19,12 +18,11 @@ class Option(BaseModel):
             return str(v)
         return v
 
-    def ask(self) -> dict:
-        """Return a dictionary representation of the option, used when sending json."""
-        return {
-            "answer": self.answer,
-            "correct": self.correct,
-        }
+
+class Option(OptionAnswer):
+    """Single answer option for a question with correctness information."""
+
+    correct: bool
 
 
 class Question(BaseModel):
@@ -32,14 +30,14 @@ class Question(BaseModel):
 
     text: str
     time_limit: int | None = None
-    options: list[Option] = Field(default_factory=list)
+    options: list[Option | OptionAnswer] = Field(default_factory=list)
 
     def ask(self) -> dict:
         """Return a representation of the question which is sent to the players."""
         return {
             "type": "question",
             "text": self.text,
-            "options": [opt.ask() for opt in self.options],
+            "options": [opt.answer for opt in self.options],
         }
 
     def print_question(self) -> None:
