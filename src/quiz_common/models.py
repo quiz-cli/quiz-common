@@ -23,7 +23,7 @@ class Option(BaseModel):
         """Return a dictionary representation of the option, used when sending json."""
         return {
             "answer": self.answer,
-            "correct": self.correct,
+            "correct": False,
         }
 
 
