@@ -1,7 +1,7 @@
 """Shared data models used by quiz components."""
 
 from pydantic import BaseModel, Field, field_validator
-
+from typing import Annotated, Union, Literal, Optional
 
 class Option(BaseModel):
     """Single answer option for a question."""
@@ -33,7 +33,6 @@ class Question(BaseModel):
             "options": [opt.answer for opt in self.options],
         }
 
-
 class Quiz(BaseModel):
     """Collection of questions with iteration state."""
 
@@ -59,3 +58,39 @@ class Quiz(BaseModel):
     def question(self) -> Question:
         """Return the current question."""
         return self.questions[self.current_question]
+
+""" MESSAGE MODELS"""
+
+class BasicMessage(BaseModel):
+      """Base message model with a type field."""
+
+      type: str
+      #timestamp: Optional[float] = None
+
+class TextMessage(BasicMessage):
+    """Generic text message."""
+
+    type: Literal["text"] = "text"
+    text: str  
+    params: Optional[dict[str, str]] = None
+
+class QuestionMessage(BasicMessage):
+    """Message sent by the server to present a question."""
+
+    type: Literal["quiz_question"] = "quiz_question"
+    question: Question
+
+class AnswerMessage(BasicMessage):
+    """Message sent by players to submit their answer."""
+
+    type: Literal["quiz_answer"] = "quiz_answer"
+    client_id: str
+    answer: str
+    """answer : list[bool] = Field(default_factory=list)"""
+
+""" Discriminated union of all supported quiz message types."""
+Message = Annotated [
+    Union[QuestionMessage, AnswerMessage, TextMessage],
+    Field(discriminator="type")
+]
+
