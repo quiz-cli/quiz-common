@@ -33,7 +33,6 @@ class Question(BaseModel):
             "options": [opt.answer for opt in self.options],
         }
 
-
 class Quiz(BaseModel):
     """Collection of questions with iteration state."""
 
@@ -71,22 +70,23 @@ class BasicMessage(BaseModel):
 class TextMessage(BasicMessage):
     """Generic text message."""
 
-    type: Literal["text"]
+    type: Literal["text"] = "text"
     text: str  
     params: Optional[dict[str, str]] = None
 
 class QuestionMessage(BasicMessage):
     """Message sent by the server to present a question."""
 
-    type: Literal["quiz_question"]
+    type: Literal["quiz_question"] = "quiz_question"
     question: Question
 
 class AnswerMessage(BasicMessage):
     """Message sent by players to submit their answer."""
 
-    type: Literal["quiz_answer"]
+    type: Literal["quiz_answer"] = "quiz_answer"
     client_id: str
-    answer : list[bool] = Field(default_factory=list)
+    answer: str
+    """answer : list[bool] = Field(default_factory=list)"""
 
 """ Discriminated union of all supported quiz message types."""
 Message = Annotated [
