@@ -23,7 +23,7 @@ dev = [
 ]
 
 [tool.ruff]
-extend = "reusable-workflows/ruff.toml"
+extend = "../.github/ruff.toml"
 
 [tool.ruff.lint.per-file-ignores]
 "tests/*" = ["S101"]
