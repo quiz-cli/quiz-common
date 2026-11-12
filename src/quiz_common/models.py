@@ -1,11 +1,18 @@
 """Shared data models used by quiz components."""
 
+
 from typing import Literal, Self
 
-from pydantic import BaseModel, Field, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 
-class Option(BaseModel):
+class BaseExtraForbid(BaseModel):
+    """Base model that forbids extra fields."""
+
+    model_config = ConfigDict(extra="forbid")
+
+
+class Option(BaseExtraForbid):
     """Single answer option for a question."""
 
     answer: str
@@ -20,7 +27,7 @@ class Option(BaseModel):
         return v
 
 
-class Question(BaseModel):
+class Question(BaseExtraForbid):
     """Quiz question with text, options and optional time limit."""
 
     text: str
@@ -53,7 +60,7 @@ class Question(BaseModel):
         }
 
 
-class Quiz(BaseModel):
+class Quiz(BaseExtraForbid):
     """Collection of questions with iteration state."""
 
     name: str
