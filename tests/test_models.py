@@ -16,6 +16,7 @@ def test_option_answer_type_conversion() -> None:
         "questions": [
             {
                 "text": "What is 10 + 12?",
+                "type": "single_choice",
                 "options": [
                     {"answer": 22, "correct": True},
                     {"answer": 3.14, "correct": False},
@@ -31,6 +32,7 @@ def test_option_answer_type_conversion() -> None:
         "questions": [
             {
                 "text": "What is 10 + 12?",
+                "type": "single_choice",
                 "options": [
                     {"answer": "22", "correct": True},
                     {"answer": "3.14", "correct": False},
