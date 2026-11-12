@@ -1,9 +1,21 @@
 """Shared data models used by quiz components."""
 
-
 from typing import Literal, Self
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+
+MESSAGES = {
+    "single_choice": "Single choice questions must have exactly one correct answer.",
+    "multiple_choice": "Multiple choice questions must have at least two correct answers.",
+}
+
+
+class CorrectAnswerCountError(ValueError):
+    """Raised when the number of correct answers does not match the question type."""
+
+    def __init__(self, question_type: str) -> None:
+        """Initialize the error with a message based on the question type."""
+        super().__init__(MESSAGES[question_type])
 
 
 class BaseExtraForbid(BaseModel):
@@ -42,13 +54,9 @@ class Question(BaseExtraForbid):
 
         if self.type == "single_choice":
             if correct_count != 1:
-                raise ValueError(
-                    "Single choice questions must have exactly one correct answer."
-                )
-        elif self.type == "multiple_choice" and correct_count < 2: # noqa: PLR2004
-                raise ValueError(
-                    "Multiple choice questions must have at least two correct answers."
-                )
+                raise CorrectAnswerCountError(self.type)
+        elif self.type == "multiple_choice" and correct_count < 2:  # noqa: PLR2004
+            raise CorrectAnswerCountError(self.type)
         return self
 
     def ask(self) -> dict:
