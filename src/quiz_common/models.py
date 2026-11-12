@@ -1,6 +1,8 @@
 """Shared data models used by quiz components."""
 
-from pydantic import BaseModel, Field, field_validator
+from typing import Literal, Self
+
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 
 class Option(BaseModel):
@@ -22,8 +24,25 @@ class Question(BaseModel):
     """Quiz question with text, options and optional time limit."""
 
     text: str
+    type: Literal["single_choice", "multiple_choice"]
     time_limit: int | None = None
     options: list[Option] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def validate_type(self) -> Self:
+        """Validate that the question type matches the number of correct answers."""
+        correct_count = sum(opt.correct for opt in self.options)
+
+        if self.type == "single_choice":
+            if correct_count != 1:
+                raise ValueError(
+                    "Single choice questions must have exactly one correct answer."
+                )
+        elif self.type == "multiple_choice" and correct_count < 2: # noqa: PLR2004
+                raise ValueError(
+                    "Multiple choice questions must have at least two correct answers."
+                )
+        return self
 
     def ask(self) -> dict:
         """Return a representation of the question which is sent to the players."""
